@@ -55,9 +55,9 @@ angular.module("compilador", ['ngSanitize']).run(function($rootScope){
         var hvarb = "[a-zA-Z][a-zA-Z0-9_]{0,14}";
         var hvarbs = hvarb + "(" + hesp + "," + hesp + hvarb + ")*";
         var htipovarb = "(entero|real|cadena|fecha|logico)";
-        var hdeclaraciones = "(" + hdeclare + hespO + hvarbs + hespO + htipovarb + hesp + ";" + ")";
+        var hdeclaraciones = "(" + hdeclare + hespO + hvarbs + hespO + htipovarb + hesp + ");?";
 
-        var palRes = new RegExp("inicio|" + hespO + "(" + hdeclaraciones + "|" + palabrasReservadas + ")", "g");
+        var palRes = new RegExp("inicio|" + hespO + "(" + hdeclaraciones + "|" + palabrasReservadas + ")|fin", "g");
 
         var res = $rootScope.code.replace(/ /g, "&nbsp&nbsp");
         res = res.replace(/\n/g, function(){
@@ -70,10 +70,11 @@ angular.module("compilador", ['ngSanitize']).run(function($rootScope){
             if (ex.test(token)) {
                 return declarar(token);
             }
+            alert(token);
             todasReservadas.push(token);
             return "<font color='blue'><b>" + token + "</b></font>";
         });
-        res = res.replace(/©/g, function(token){
+        res = res.replace(/©/g, function(){
             ncoment++;
             return gcoment.pop();
         });

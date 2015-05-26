@@ -23,7 +23,7 @@ function declarar(dec) {
             return token;
     });
     dec = dec.replace(er, function (token) {
-        var tipoDato = /entero|real|cadena|fecha|logico/;
+        var tipoDato = /(entero|real|cadena|fecha|logico)/;
         todasReservadas.push(token);
         if (tipoDato.test(token)) {
             variable[token] = $.merge(variable[token], temporales);
