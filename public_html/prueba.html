@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html data-ng-app="compilador">
+    <head>
+        <title>prueba</title>
+        <link rel="stylesheet" href="frameworks/bootstrap.min.css">
+        <link rel="stylesheet" href="frameworks/bootstrap-theme.min.css">
+        <script src="frameworks/jquery-1.11.2.min.js"></script>
+        <script src="frameworks/angular.min.js"></script>
+        <script src="frameworks/angular-sanitize.min.js"></script>
+        <script src="prueba.js"></script>
+    </head>
+
+    <body data-ng-controller="guardian">
+        <div class="container-fluid">
+            <div style="margin-top: 20px" class="row">
+                <div class="col-lg-6">
+                    <textarea style="width:100%;height:200px" data-ng-model="code" data-ng-keyup="validar()"></textarea>
+                    <input type="button" id="val" data-ng-click="ver()" value="validar">
+                </div>        
+                <div onclick="alertas()"  class="col-lg-6" data-ng-bind-html="res"></div>
+            </div>
+        </div>
+
+        <div class="row container">
+            <br>
+            <p><font color="blue"><b>Numero de Palabras Reservadas: {{todasReservadas.length}}</b></font></p>
+            <p><font color="#848484"><b>Numero de Lineas de Comentarios: {{ncoment}}</b></font></p>
+            <p>Numero de Identificadores Validos: {{datos.todas.length}} </p>
+            <ul>
+                <li>Numero de Datos tipo Entero: {{datos.entero.length}}</li>
+                <li>Numero de Datos tipo Cadena: {{datos.cadena.length}}</li>
+                <li>Numero de Datos tipo Fecha: {{datos.fecha.length}}</li>
+                <li>Numero de Datos tipo logico: {{datos.logico.length}}</li>
+                <li>Numero de Datos tipo Real: {{datos.real.length}}</li>
+                <li>Numero de Identificadores No Validos: {{tipDat.nov.length}}</li>
+            </ul>
+        </div>
+
+        <div>
+            <ul>
+                <li>Variables Entero Declaradas: {{datos.entero}}</li>
+                <li>Variables Cadena Declaradas: {{datos.cadena}}</li>
+                <li>Variables Fecha Declaradas: {{datos.fecha}}</li>
+                <li>Variables Logico Declaradas: {{datos.logico}}</li>
+                <li>Variables Real Declaradas: {{datos.real}}</li>
+                <li>Variables Declaradas No Validas: {{datos.nov}}</li>
+            </ul>
+        </div>		
+    </body>
+</html>

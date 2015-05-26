@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html data-ng-app="compilador">
+    <head>
+        <title>Compilador</title>
+        <link rel="stylesheet" href="frameworks/bootstrap.min.css">
+        <link rel="stylesheet" href="frameworks/bootstrap-theme.min.css">
+        <script src="frameworks/jquery-1.11.2.min.js"></script>
+        <script src="frameworks/bootstrap.min.js"></script>
+        <script src="frameworks/angular.min.js"></script>
+        <script src="frameworks/angular-sanitize.min.js"></script>
+        <script src="prueba.js"></script>
+        <script src="js/busquedas.js"></script>
+        <script src="js/analizadores.js"></script>
+        <style>
+            .rep {
+                color: red;text-decoration: underline;
+            }
+            .rep strong {color: black;}
+        </style>
+    </head>
+    <body>
+        <div class="container-fluid" data-ng-controller="guardian">
+            <div class="row">
+                <div class="jumbotron">
+                    Palabras Reservadas: <font color="blue"><b>
+                        inicio, si, entonces, sino, finSi, mq, finMq, para, finPara, haga, declare, envia, recibe, llamar, fin, entero, real, cadena, fecha, logico
+                    </b></font>
+                    <header><h1 class="text-center">
+                            COMPILADOR MUNDIAL
+                        </h1></header>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <textarea   rows="{{rows}}" id="contenido" style="width:100%;resize:none;" data-ng-model="code" data-ng-keyup="validar()" >
+                    </textarea>
+                </div>
+
+                <div   onmouseover="alertas()" class="col-lg-6" data-ng-bind-html="res">
+                </div>		
+            </div>
+            <div class="row container" data-ng-controller="busquedas">
+                <div class="col-lg-6">
+
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Regular link</a></li>
+                        <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">Disabled link</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another link</a></li>
+                    </ul>
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Busque una palabra" data-ng-model="bus" data-ng-keyUp="buscar()" >
+                        </div>
+                        <button type="submit" disabled class="btn btn-default">Numero de Ocurrencias: {{oc}}</button>
+                    </form>
+
+                    <div class="navbar-form navbar-left"  data-ng-show="mostrar" >
+                        <input type="text" class="form-control" data-ng-model="trempl"  placeholder="Remplazar por:" data-ng-keyUp="remplazar()">
+                        <button class="form-control" data-ng-click="aplicar()">Aplicar</button>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-ng-bind-html="rec"></div>
+            </div>
+
+            <div class="row container">
+                <br>
+                <p><font color="blue"><b>Numero de Palabras Reservadas: {{todasReservadas.length}}</b></font></p>
+                <p><font color="#848484"><b>Numero de Lineas de Comentarios: {{ncoment}}</b></font></p>
+                <p>Numero de Identificadores Validos: {{datos.todas.length}} </p>
+                <ul>
+                    <li>Numero de Datos tipo Entero: {{datos.entero.length}}</li>
+                    <li>Numero de Datos tipo Cadena: {{datos.cadena.length}}</li>
+                    <li>Numero de Datos tipo Fecha: {{datos.fecha.length}}</li>
+                    <li>Numero de Datos tipo logico: {{datos.logico.length}}</li>
+                    <li>Numero de Datos tipo Real: {{datos.real.length}}</li>
+                    <li>Numero de Identificadores No Validos: {{tipDat.nov.length}}</li>
+                </ul>
+            </div>
+
+            <div>
+                <ul>
+                    <li>Variables Entero Declaradas: {{datos.entero}}</li>
+                    <li>Variables Cadena Declaradas: {{datos.cadena}}</li>
+                    <li>Variables Fecha Declaradas: {{datos.fecha}}</li>
+                    <li>Variables Logico Declaradas: {{datos.logico}}</li>
+                    <li>Variables Real Declaradas: {{datos.real}}</li>
+                    <li>Variables Declaradas No Validas: {{datos.nov}}</li>
+                </ul>
+            </div>						
+
+        </div>
+        <b>UNO</b> is United Nations Organization. <font class='rep' data-toggle='tooltip' data-placement='bottom' title='Variable ya declarada'><strong>WHO</strong></font> is World Health Organization.
+        <button type="button" class="btn btn-default rep" data-toggle="tooltip"  data-placement="left" title="Tooltip on left">Tooltip on left</button>
+    </body>
+</html>
