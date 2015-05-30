@@ -16,22 +16,22 @@ var gcoment = new Array();
 var declaraciones = "(" + declare + espO + varbs + espO + tipovarb + esp + ";" + esp + ")*";
 var condiciones = "(" + condicion + espO + "entonces" + espO + finCondicion + esp + ";" + ")*";
 //Contenedor de variables
-var variable = {entero:new Array(), real:new Array(), cadena:new Array(), fecha: new Array(), logico: new Array() };
+var variable = {entero: new Array(), real: new Array(), cadena: new Array(), fecha: new Array(), logico: new Array()};
 var todasReservadas = new Array();
 
-function reset(){
-    variable = {entero:new Array(), real:new Array(), cadena:new Array(), fecha: new Array(), logico: new Array(), todas:new Array() };
+function reset() {
+    variable = {entero: new Array(), real: new Array(), cadena: new Array(), fecha: new Array(), logico: new Array(), todas: new Array()};
     todasReservadas = new Array();
     ncoment = 0;
     saltos = 1;
 }
 
 
-angular.module("compilador", ['ngSanitize']).run(function($rootScope){
+angular.module("compilador", ['ngSanitize']).run(function($rootScope) {
     $rootScope.code;
     $rootScope.res;
     $rootScope.validar;
-}).controller("guardian", function ($rootScope,$scope) {
+}).controller("guardian", function($rootScope, $scope) {
     $('#contenido').val("inicio\n \nfin;");
     reset();
     $scope.rows = saltos;
@@ -39,12 +39,12 @@ angular.module("compilador", ['ngSanitize']).run(function($rootScope){
     $scope.ncoment;
     $scope.todasReservadas;
 
-    $rootScope.validar = function () {
+    $rootScope.validar = function() {
         $rootScope.code = $('#contenido').val();
         reset();
         ex = new RegExp(
                 "^inicio" + espO
-                + "("+"#|" + declaraciones + esp + "|" + condiciones + esp + ")*" +
+                + "(" + "#|" + declaraciones + esp + "|" + condiciones + esp + ")*" +
                 "fin;$");
         var pal = $rootScope.code;
 
@@ -57,27 +57,34 @@ angular.module("compilador", ['ngSanitize']).run(function($rootScope){
         var htipovarb = "(entero|real|cadena|fecha|logico)";
         var hdeclaraciones = "(" + hdeclare + hespO + hvarbs + hespO + htipovarb + hesp + ");?";
 
-        var palRes = new RegExp("inicio|" + hespO + "(" + hdeclaraciones + "|" + palabrasReservadas + ")|fin", "g");
+        var palRes = new RegExp("inicio|" + hespO + "(" + hdeclaraciones + "|" + palabrasReservadas + "|" + hvarb + ")|fin", "g");
 
         var res = $rootScope.code.replace(/ /g, "&nbsp&nbsp");
-        res = res.replace(/\n/g, function(){
+        res = res.replace(/\n/g, function() {
             saltos++;
             return "<br>";
         });
         res = comentarios(res);
-        res = res.replace(palRes, function (token) {
-            ex = new RegExp(hdeclaraciones);
-            if (ex.test(token)) {
+        res = res.replace(palRes, function(token) {
+            var ex = new RegExp(hdeclaraciones);
+            var varb = new RegExp(hvarb);
+            var reservadas = new RegExp(palabrasReservadas);
+            if (ex.test(token))
                 return declarar(token);
-            }
-            alert(token);
-            todasReservadas.push(token);
-            return "<font color='blue'><b>" + token + "</b></font>";
+            else if (reservadas.test(token)) {
+                todasReservadas.push(token);
+                return "<font color='blue'><b>" + token + "</b></font>";
+            } else if (varb.test(token)) {
+                return variables(token, varb);
+            } else
+                return token;
         });
-        res = res.replace(/©/g, function(){
+        res = res.replace(/©/g, function() {
             ncoment++;
             return gcoment.pop();
         });
+        res = res.replace(/♂/g, "&nbsp");
+        res = res.replace(/♀/g, "<br>");
         $scope.todasReservadas = todasReservadas;
         $scope.datos = variable;
         $scope.ncoment = ncoment;
@@ -85,7 +92,7 @@ angular.module("compilador", ['ngSanitize']).run(function($rootScope){
         $scope.rows = saltos;
     };
 
-    $scope.ver = function () {
+    $scope.ver = function() {
         var pal = $rootScope.code;
         var reg = new RegExp(declare + espO + varbs + espO + tipovarb + esp + ";", "g");
         var res = pal.match(reg);
